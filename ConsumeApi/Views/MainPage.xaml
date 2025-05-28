@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="ConsumeApi.Views.MainPage"
+             xmlns:models="clr-namespace:ConsumeApi.Models"
+             xmlns:viewmodels="clr-namespace:ConsumeApi.ViewModels"
+             NavigationPage.HasNavigationBar="False"
+             Title="MainPage">
+    <Grid>
+        <CollectionView ItemsSource="{Binding Products}">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Border>
+                        <VerticalStackLayout>
+                            <Label Text="{Binding Category}" 
+                                   FontSize="20"
+                                   FontAttributes="Bold"/>
+                            <Label Text="{Binding Name}"/>
+                            <Label Text="{Binding Price, StringFormat='Price: {0:C}'}"/>
+                            <Label Text="{Binding Description}"/>
+                            <Image Source="{Binding Image}" HeightRequest="200" 
+                                   WidthRequest="200"/>
+                        </VerticalStackLayout>
+                    </Border>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </Grid>
+</ContentPage>
