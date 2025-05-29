@@ -6,21 +6,33 @@
              xmlns:viewmodels="clr-namespace:ConsumeApi.ViewModels"
              NavigationPage.HasNavigationBar="False"
              Title="MainPage">
-    <Grid Padding="10">
-        <CollectionView ItemsSource="{Binding Products}">
+    <Grid Padding="10"
+          RowDefinitions="Auto, Auto, *">
+        <Label Text="Consuming API"
+               Grid.Row="0"
+               BackgroundColor="Blue"
+               FontSize="30"
+               FontAttributes="Bold"
+               Padding="10"
+               HorizontalTextAlignment="Center"
+               Margin="-10,5"/>
+
+        <CollectionView ItemsSource="{Binding Offers}"
+                        Grid.Row="1"
+                        HeightRequest="120">
+            <CollectionView.ItemsLayout>
+                <LinearItemsLayout Orientation="Horizontal" ItemSpacing="10"/>
+            </CollectionView.ItemsLayout>
             <CollectionView.ItemTemplate>
-                <DataTemplate>
-                    <Border StrokeShape="RoundRectangle 10">
-                        <VerticalStackLayout Padding="10,5">
-                            <Image Source="{Binding Image}" 
-                                   HeightRequest="200"
-                                   WidthRequest="150"
-                                   Aspect="AspectFill"/>
-                            <Label Text="{Binding Title}"
-                                   FontSize="16"
-                                   FontAttributes="Bold"/>
-                            <Label Text="{Binding Price, StringFormat='${0:F2}'}"/>
-                        </VerticalStackLayout>
+                <DataTemplate x:DataType="models:Offers">
+                    <Border StrokeShape="RoundRectangle 10"
+                            StrokeThickness="0">
+                        <Grid Background="{Binding BgColor}"
+                              RowDefinitions=".2*,.6*,1*">
+                            <Label Grid.Row="0"
+                                   Text="{Binding Title}"/>
+                            <Label Grid.Row="1" />
+                        </Grid>
                     </Border>
                 </DataTemplate>
             </CollectionView.ItemTemplate>

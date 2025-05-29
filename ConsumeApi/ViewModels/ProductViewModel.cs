@@ -2,6 +2,7 @@
 using ConsumeApi.Models;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -15,6 +16,7 @@ namespace ConsumeApi.ViewModels
         private readonly StoreApi _apiService;
         private List<Product> _products;
         private bool _isLoading;
+        public ObservableCollection<Offers> Offers { get; set; }
 
 
         public List<Product> Products
@@ -54,6 +56,12 @@ namespace ConsumeApi.ViewModels
                 if (products != null)
                 {
                     Products = products;
+                }
+
+                var offers = Offers.GetOffers();
+                foreach (var offer in Offers.GetOffers())
+                {
+                    Offers.Add(offer);
                 }
             }
             catch(Exception ex)
