@@ -9,7 +9,7 @@ namespace ConsumeApi
         {
             InitializeComponent();
 
-            MainPage = new MainPage(new ProductViewModel());
+            MainPage = new MainPage(new MainPageViewModel());
         }
     }
 }

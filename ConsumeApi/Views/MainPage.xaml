@@ -6,34 +6,126 @@
              xmlns:viewmodels="clr-namespace:ConsumeApi.ViewModels"
              NavigationPage.HasNavigationBar="False"
              Title="MainPage">
-    <Grid Padding="10"
-          RowDefinitions="Auto, Auto, *">
+    <Grid
+          RowDefinitions="Auto, Auto,Auto, *">
+        <ActivityIndicator IsVisible="{Binding isLoading}"
+                           IsRunning="{Binding isLoading}"
+                           Color="DarkBlue"
+                           HorizontalOptions="Center"
+                           VerticalOptions="Center"
+                           WidthRequest="50"
+                           HeightRequest="50"/>
         <Label Text="Consuming API"
                Grid.Row="0"
-               BackgroundColor="Blue"
+               BackgroundColor="Lavender"
                FontSize="30"
                FontAttributes="Bold"
                Padding="10"
                HorizontalTextAlignment="Center"
-               Margin="-10,5"/>
-
-        <CollectionView ItemsSource="{Binding Offers}"
+               Margin="0,0,0,10"/>
+        
+        <IndicatorView x:Name="offersIndicator"
+                       HorizontalOptions="Center"
+                       Margin="0,5"
+                       Grid.Row="1"
+                       VerticalOptions="Start"/>
+        <CarouselView ItemsSource="{Binding Offers}"
+                      IndicatorView="offersIndicator"
                         Grid.Row="1"
-                        HeightRequest="120">
-            <CollectionView.ItemsLayout>
-                <LinearItemsLayout Orientation="Horizontal" ItemSpacing="10"/>
-            </CollectionView.ItemsLayout>
-            <CollectionView.ItemTemplate>
-                <DataTemplate x:DataType="models:Offers">
+                        HeightRequest="120"
+                      PeekAreaInsets="2"
+                      IsBounceEnabled="True">
+            <CarouselView.ItemTemplate>
+                <DataTemplate x:DataType="models:Offer">
                     <Border StrokeShape="RoundRectangle 10"
                             StrokeThickness="0">
-                        <Grid Background="{Binding BgColor}"
-                              RowDefinitions=".2*,.6*,1*">
-                            <Label Grid.Row="0"
-                                   Text="{Binding Title}"/>
-                            <Label Grid.Row="1" />
+                        <Border.WidthRequest>
+                            <OnPlatform x:TypeArguments="x:Double">
+                                <On Platform="WinUI" Value="1500"/>
+                                <On Platform="Android" Value="350" />
+                            </OnPlatform>
+                        </Border.WidthRequest>
+                        <Grid>
+                            <BoxView Background="{Binding BgColor}"
+                                     Opacity="0.4"/>
+                            <Grid 
+                                  RowDefinitions="Auto,Auto,1*"
+                                Padding="10">
+                                <Label Grid.Row="0"
+                                       Text="{Binding Title}"
+                                       FontAttributes="Bold"
+                                       FontSize="Subtitle"/>
+                                <Label Grid.Row="1" 
+                                       Text="{Binding Description}"
+                                       Margin="5,0,0,0"/>
+                                <Label Grid.Row="2"
+                                       Text="{Binding CouponCode}"
+                                       VerticalOptions="End"
+                                       HorizontalOptions="End"
+                                       FontSize="Caption"/>
+                            </Grid>
                         </Grid>
                     </Border>
+                </DataTemplate>
+            </CarouselView.ItemTemplate>
+        </CarouselView>
+
+        <CollectionView ItemsSource="{Binding Categories}"
+                        SelectedItem="{Binding SelectedCategory}"
+                        SelectionMode="Single"
+                        Grid.Row="2"
+                        Margin="5"
+                        HeightRequest="120">
+            <CollectionView.ItemsLayout>
+                <LinearItemsLayout Orientation="Horizontal" ItemSpacing="5"/>
+            </CollectionView.ItemsLayout>
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="models:ProductCategory">
+                    <Border StrokeShape="RoundRectangle 10"
+                            StrokeThickness="0"
+                            Margin="10"
+                            BackgroundColor="#f7f7f7">
+                        <Grid>
+                            <Border Stroke="Lavender"
+                                    StrokeShape="RoundRectangle 10"
+                                    Background="Bisque"
+                                    HorizontalOptions="Center"
+                                    VerticalOptions="End"
+                                    Margin="10,5">
+                                <Label Text="{Binding CategoryName}"
+                                       Margin="10,5"/>
+                            </Border>
+                        </Grid>
+                    </Border>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+        <CollectionView ItemsSource="{Binding FilteredProducts}"
+                        Grid.Row="3"
+                        VerticalOptions="Start"
+                        Margin="10">
+            <CollectionView.ItemsLayout>
+                <GridItemsLayout Orientation="Vertical" 
+                                 HorizontalItemSpacing="5" 
+                                 VerticalItemSpacing="5"
+                                 Span="{OnPlatform Android=2, iOS=2, WinUI= 4, MacCatalyst=4}"/>
+               
+            </CollectionView.ItemsLayout>
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="models:Product">
+                    <Frame>
+                        <Grid>
+                            <Image Source="{Binding Image}"
+                                   Aspect="AspectFill"/>
+                            <Frame VerticalOptions="End">
+                                <VerticalStackLayout>
+                                    <Label Text="{Binding Price}"/>
+                                    <Label Text="{Binding Title}"/>
+                                </VerticalStackLayout>
+                            </Frame>
+                        </Grid>
+                    </Frame>
                 </DataTemplate>
             </CollectionView.ItemTemplate>
         </CollectionView>

@@ -4,8 +4,8 @@ namespace ConsumeApi.Views;
 
 public partial class MainPage : ContentPage
 {
-	private readonly ProductViewModel _viewModel;
-    public MainPage(ProductViewModel viewModel)
+	private readonly MainPageViewModel _viewModel;
+    public MainPage(MainPageViewModel viewModel)
 	{
 		InitializeComponent();
 		BindingContext = viewModel;
