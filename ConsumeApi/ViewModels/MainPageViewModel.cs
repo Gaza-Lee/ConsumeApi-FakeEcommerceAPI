@@ -80,7 +80,18 @@ namespace ConsumeApi.ViewModels
                 FilteredProducts.Add(product);
             }
         }
-        
+
+        private string GetCategoryImage(string categoryName)
+        {
+            return categoryName.ToLower() switch
+            {
+                "electronics" => "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse4.mm.bing.net%2Fth%3Fid%3DOIP.FIr8tkgvJyAjm-o8sEh0AwHaEC%26pid%3DApi&f=1&ipt=2efab630c86e68de759ab66ad887891a1cf6bb6b5dbff70447b143598ba8c9a7",
+                "jewelery" => "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fstatic.vecteezy.com%2Fsystem%2Fresources%2Fpreviews%2F021%2F836%2F736%2Flarge_2x%2Fluxury-jewelry-abstract-background-ai-generated-photo.jpg&f=1&nofb=1&ipt=4e64eb2262e96ce693f9df910dd9fe911bc7495f16a13dbb6962f2c70c5d61e8",
+                "men's clothing" => "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fmedia.istockphoto.com%2Fphotos%2Fsuitcase-with-mens-clothings-isolated-on-white-background-picture-id1012579136%3Fk%3D6%26m%3D1012579136%26s%3D612x612%26w%3D0%26h%3DomhsOXIz-pqmrx280-FjYGfN1FWTYWGj9Fk348lj1eA%3D&f=1&nofb=1&ipt=4db00de42ea0f34ce0cb5c24e7f7d57859582c5f5f033116e3575c109d188fe6",
+                "women's clothing" => "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fassets.simpleviewinc.com%2Fsimpleview%2Fimage%2Fupload%2Fc_limit%2Cq_75%2Cw_1200%2Fv1%2Fcrm%2Feurekaca%2FB63FE394-D2A0-4871-8AE3-53C3001AA809_FC1CA812-5056-A36A-096BEC39DD4EC30D-fc1ca4e25056a36_fc1cb488-5056-a36a-093829553cd2ed96.jpg&f=1&nofb=1&ipt=f614ebad555f8305246aa2958e11e8982d8bb7f3c2e77d28b813848a503a679e",
+                
+            };
+        }
 
 
         public async Task LoadProductsAsync()
@@ -97,7 +108,11 @@ namespace ConsumeApi.ViewModels
 
                     //Extract Uniques Categories from Products
                     var uniqueCategories =
-                        Products.Select(p => p.Category).Distinct().Select(c => new ProductCategory { CategoryName = c });
+                        Products.Select(p => p.Category).Distinct().Select(c => new ProductCategory 
+                        { 
+                            CategoryName = c,
+                            Image = GetCategoryImage(c) 
+                        });
 
                     Categories.Clear();
                     foreach (var category in uniqueCategories)
@@ -124,15 +139,16 @@ namespace ConsumeApi.ViewModels
                             FilteredProducts.Add(product);
                         }
                     }
+
+                    Offers.Clear();
+                    foreach (var offers in Offer.GetOffers())
+                    {
+                        Console.WriteLine($"Offer: {offers.Title}, Description: {offers.Description}, Coupon: {offers.CouponCode}");
+                        Offers.Add(offers);
+
+                    }
                 }
 
-                Offers.Clear();
-                foreach (var offers in Offer.GetOffers())
-                {
-                    Console.WriteLine($"Offer: {offers.Title}, Description: {offers.Description}, Coupon: {offers.CouponCode}");
-                    Offers.Add(offers);
-
-                }
             }
             catch (Exception ex)
             {

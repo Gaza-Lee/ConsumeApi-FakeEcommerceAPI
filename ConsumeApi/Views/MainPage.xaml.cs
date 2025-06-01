@@ -15,6 +15,10 @@ public partial class MainPage : ContentPage
 	protected override async void OnAppearing()
 	{
 		base.OnAppearing();
-		await _viewModel.LoadProductsAsync();
+
+		if (_viewModel != null && !_viewModel.IsLoading)
+		{
+            await _viewModel.LoadProductsAsync();
+        }
     }
 }

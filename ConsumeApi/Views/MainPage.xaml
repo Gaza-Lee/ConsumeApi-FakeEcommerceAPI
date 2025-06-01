@@ -4,12 +4,19 @@
              x:Class="ConsumeApi.Views.MainPage"
              xmlns:models="clr-namespace:ConsumeApi.Models"
              xmlns:viewmodels="clr-namespace:ConsumeApi.ViewModels"
+             xmlns:converters="clr-namespace:ConsumeApi.Converters"
              NavigationPage.HasNavigationBar="False"
              Title="MainPage">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converters:TruncateTextConverter x:Key="TruncateTextConverter"/>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    
     <Grid
           RowDefinitions="Auto, Auto,Auto, *">
-        <ActivityIndicator IsVisible="{Binding isLoading}"
-                           IsRunning="{Binding isLoading}"
+        <ActivityIndicator IsVisible="{Binding IsLoading}"
+                           IsRunning="{Binding IsLoading}"
                            Color="DarkBlue"
                            HorizontalOptions="Center"
                            VerticalOptions="Center"
@@ -19,6 +26,7 @@
                Grid.Row="0"
                BackgroundColor="Lavender"
                FontSize="30"
+               TextColor="#000"
                FontAttributes="Bold"
                Padding="10"
                HorizontalTextAlignment="Center"
@@ -75,7 +83,8 @@
                         SelectionMode="Single"
                         Grid.Row="2"
                         Margin="5"
-                        HeightRequest="120">
+                        HeightRequest="120"
+                        HorizontalOptions="Center">
             <CollectionView.ItemsLayout>
                 <LinearItemsLayout Orientation="Horizontal" ItemSpacing="5"/>
             </CollectionView.ItemsLayout>
@@ -86,14 +95,22 @@
                             Margin="10"
                             BackgroundColor="#f7f7f7">
                         <Grid>
+                            <Image Source="{Binding Image}"
+                                   Aspect="AspectFit"
+                                   HeightRequest="100"
+                                   WidthRequest="100"
+                                   HorizontalOptions="Center"
+                                   VerticalOptions="Center"/>
                             <Border Stroke="Lavender"
                                     StrokeShape="RoundRectangle 10"
                                     Background="Bisque"
                                     HorizontalOptions="Center"
                                     VerticalOptions="End"
                                     Margin="10,5">
-                                <Label Text="{Binding CategoryName}"
-                                       Margin="10,5"/>
+                                <Label Text="{Binding DisplayCategoryName}"
+                                       Margin="10,5"
+                                       TextColor="#000"
+                                       FontAttributes="Bold"/>
                             </Border>
                         </Grid>
                     </Border>
@@ -114,18 +131,36 @@
             </CollectionView.ItemsLayout>
             <CollectionView.ItemTemplate>
                 <DataTemplate x:DataType="models:Product">
-                    <Frame>
-                        <Grid>
+                    <Border StrokeShape="RoundRectangle 20"
+                            StrokeThickness="0"
+                            HeightRequest="{OnPlatform Android=250, WinUI=450, MacCatalyst=450, iOS=250}">
+                        <Grid  RowDefinitions=".75*,.25*">
                             <Image Source="{Binding Image}"
+                                   Grid.Row="0"
+                                   Grid.RowSpan="2"
                                    Aspect="AspectFill"/>
-                            <Frame VerticalOptions="End">
-                                <VerticalStackLayout>
-                                    <Label Text="{Binding Price}"/>
-                                    <Label Text="{Binding Title}"/>
-                                </VerticalStackLayout>
-                            </Frame>
+                            <Border StrokeThickness="0"
+                                    Grid.Row="1"
+                                    VerticalOptions="End"
+                                    HeightRequest="90">
+
+                                <Grid>
+                                    <BoxView BackgroundColor="AliceBlue"
+                                             Opacity="0.8"/>
+                                    <VerticalStackLayout Margin="10,5">
+                                        <Label Text="{Binding Title, Converter={StaticResource TruncateTextConverter}, ConverterParameter=25}"
+                                               FontSize="Subtitle"
+                                               FontAttributes="Bold"
+                                               TextColor="#000"/>
+                                        <Label Text="{Binding Price, StringFormat='{}{0:C}'}"
+                                               FontSize="16"
+                                               FontAttributes="Bold"
+                                               TextColor="#000"/>
+                                    </VerticalStackLayout>
+                                </Grid>
+                            </Border>
                         </Grid>
-                    </Frame>
+                    </Border>
                 </DataTemplate>
             </CollectionView.ItemTemplate>
         </CollectionView>
