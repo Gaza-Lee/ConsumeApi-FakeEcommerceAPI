@@ -9,10 +9,19 @@
              Title="MainPage">
     <ContentPage.Resources>
         <ResourceDictionary>
+            <Style TargetType="Label" x:Key="cartCounter">
+                <Setter Property="FontSize" Value="16"/>
+                <Setter Property="TextColor" Value="#000"/>
+                <Setter Property="Background" Value="#ff5500"/>
+                <Setter Property="Padding" Value="10,0"/>
+                <Setter Property="HorizontalTextAlignment" Value="Center"/>
+                <Setter Property="VerticalOptions" Value="Center"/>
+                <Setter Property="FontAttributes" Value="Bold" />
+            </Style>
             <converters:TruncateTextConverter x:Key="TruncateTextConverter"/>
         </ResourceDictionary>
     </ContentPage.Resources>
-    
+
     <Grid
           RowDefinitions="Auto, Auto,Auto, *">
         <ActivityIndicator IsVisible="{Binding IsLoading}"
@@ -31,7 +40,7 @@
                Padding="10"
                HorizontalTextAlignment="Center"
                Margin="0,0,0,10"/>
-        
+
         <IndicatorView x:Name="offersIndicator"
                        HorizontalOptions="Center"
                        Margin="0,5"
@@ -92,11 +101,11 @@
                 <DataTemplate x:DataType="models:ProductCategory">
                     <Border StrokeShape="RoundRectangle 10"
                             StrokeThickness="0"
-                            Margin="10"
+                            Padding="10"
                             BackgroundColor="#f7f7f7">
                         <Grid>
                             <Image Source="{Binding Image}"
-                                   Aspect="AspectFit"
+                                   Aspect="AspectFill"
                                    HeightRequest="100"
                                    WidthRequest="100"
                                    HorizontalOptions="Center"
@@ -105,8 +114,7 @@
                                     StrokeShape="RoundRectangle 10"
                                     Background="Bisque"
                                     HorizontalOptions="Center"
-                                    VerticalOptions="End"
-                                    Margin="10,5">
+                                    VerticalOptions="End">
                                 <Label Text="{Binding DisplayCategoryName}"
                                        Margin="10,5"
                                        TextColor="#000"
@@ -126,14 +134,14 @@
                 <GridItemsLayout Orientation="Vertical" 
                                  HorizontalItemSpacing="5" 
                                  VerticalItemSpacing="5"
-                                 Span="{OnPlatform Android=2, iOS=2, WinUI= 4, MacCatalyst=4}"/>
-               
+                                 Span="{OnPlatform Android=2, iOS=2, WinUI= 6, MacCatalyst=6}"/>
+
             </CollectionView.ItemsLayout>
             <CollectionView.ItemTemplate>
                 <DataTemplate x:DataType="models:Product">
                     <Border StrokeShape="RoundRectangle 20"
                             StrokeThickness="0"
-                            HeightRequest="{OnPlatform Android=250, WinUI=450, MacCatalyst=450, iOS=250}">
+                            HeightRequest="{OnPlatform Android=250, WinUI=350, MacCatalyst=350, iOS=250}">
                         <Grid  RowDefinitions=".75*,.25*">
                             <Image Source="{Binding Image}"
                                    Grid.Row="0"
@@ -148,7 +156,7 @@
                                     <BoxView BackgroundColor="AliceBlue"
                                              Opacity="0.8"/>
                                     <VerticalStackLayout Margin="10,5">
-                                        <Label Text="{Binding Title, Converter={StaticResource TruncateTextConverter}, ConverterParameter=25}"
+                                        <Label Text="{Binding Title, Converter={StaticResource TruncateTextConverter}, ConverterParameter=10}"
                                                FontSize="Subtitle"
                                                FontAttributes="Bold"
                                                TextColor="#000"/>
@@ -156,6 +164,25 @@
                                                FontSize="16"
                                                FontAttributes="Bold"
                                                TextColor="#000"/>
+                                        <VerticalStackLayout HorizontalOptions="End">
+                                            <Border StrokeShape="RoundRectangle 20"
+                                                    StrokeThickness="0"
+                                                    Padding="0"
+                                                    HorizontalOptions="Center">
+                                                <HorizontalStackLayout>
+                                                    <Label Text="-"
+                                                           Style="{StaticResource cartCounter}">
+                                                    </Label>
+                                                    <Label Text="0" 
+                                                           Margin="20,0" 
+                                                           TextColor="#000"
+                                                           FontSize="20"
+                                                           HorizontalTextAlignment="Center"/>
+                                                    <Label Text="+" 
+                                                          Style="{StaticResource cartCounter}"/>
+                                                </HorizontalStackLayout>
+                                            </Border>
+                                        </VerticalStackLayout>
                                     </VerticalStackLayout>
                                 </Grid>
                             </Border>
