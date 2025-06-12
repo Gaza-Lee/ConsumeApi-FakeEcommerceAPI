@@ -128,6 +128,7 @@
 
         <CollectionView ItemsSource="{Binding FilteredProducts}"
                         Grid.Row="3"
+                        SelectionMode="Single"
                         VerticalOptions="Start"
                         Margin="10">
             <CollectionView.ItemsLayout>
@@ -172,14 +173,21 @@
                                                 <HorizontalStackLayout>
                                                     <Label Text="-"
                                                            Style="{StaticResource cartCounter}">
+                                                        <Label.GestureRecognizers>
+                                                            <TapGestureRecognizer Command="{Binding DecreaseProductCommand}"/>
+                                                        </Label.GestureRecognizers>
                                                     </Label>
-                                                    <Label Text="0" 
+                                                    <Label Text="{Binding ProductCount}" 
                                                            Margin="20,0" 
                                                            TextColor="#000"
                                                            FontSize="20"
                                                            HorizontalTextAlignment="Center"/>
                                                     <Label Text="+" 
-                                                          Style="{StaticResource cartCounter}"/>
+                                                          Style="{StaticResource cartCounter}">
+                                                        <Label.GestureRecognizers>
+                                                            <TapGestureRecognizer Command="{Binding IncreaseProductCommand}"/>
+                                                        </Label.GestureRecognizers>
+                                                    </Label>
                                                 </HorizontalStackLayout>
                                             </Border>
                                         </VerticalStackLayout>

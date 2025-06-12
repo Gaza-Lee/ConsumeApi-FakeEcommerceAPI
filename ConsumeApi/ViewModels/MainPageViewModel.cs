@@ -8,6 +8,8 @@ using System.Threading.Tasks;
 using ConsumeApi.Models;
 using System.Collections.ObjectModel;
 using System.Runtime.CompilerServices;
+using System.Windows.Input;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace ConsumeApi.ViewModels
 {
@@ -17,6 +19,8 @@ namespace ConsumeApi.ViewModels
         private ProductCategory _selectedCategory;
         private List<Product> _products;
         private bool _isLoading;
+        private Product _selectedProduct;
+
 
         public ObservableCollection<ProductCategory> Categories { get; set; }
         public ObservableCollection<Product> FilteredProducts { get; set; }
@@ -30,10 +34,9 @@ namespace ConsumeApi.ViewModels
             Offers = new ObservableCollection<Offer>(Offer.GetOffers());
             Categories = new ObservableCollection<ProductCategory>();
             FilteredProducts = new ObservableCollection<Product>();
-
         }
 
-
+        #region Properties
         public List<Product> Products
         {
             get => _products;
@@ -43,8 +46,6 @@ namespace ConsumeApi.ViewModels
                 OnPropertyChanged();
             }
         }
-
-       
 
         public bool IsLoading
         {
@@ -66,6 +67,26 @@ namespace ConsumeApi.ViewModels
                     ApplyCategoryFilter();
             }
         }
+
+        public Product SelectedProduct
+        {
+            get => _selectedProduct;
+            set
+            {
+                if(_selectedProduct != value)
+                {
+                    _selectedProduct = value;
+                    OnPropertyChanged();
+
+                    if (_selectedProduct != null)
+                    {
+
+                    }
+                }
+            }
+        }
+
+        #endregion
 
         private void ApplyCategoryFilter()
         {
